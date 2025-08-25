@@ -1,0 +1,8 @@
+[
+	{
+		"Title": "Notepad",
+		"Platform": "Windows",
+		"ExecutablePath": "notepad.exe",
+		"CoverImagePath": "Themes/Default/assets/notepad.png"
+	}
+]
