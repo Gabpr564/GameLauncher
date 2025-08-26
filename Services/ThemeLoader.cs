@@ -20,5 +20,6 @@ namespace PsConsoleLauncher.Services
 			var json = File.ReadAllText(manifestPath);
 			return JsonSerializer.Deserialize<ThemeManifest>(json);
 		}
+		// Make sure to tie in with theme folder.
 	}
 }

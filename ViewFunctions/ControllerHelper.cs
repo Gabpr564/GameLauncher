@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace PsConsoleLauncher.Views
+namespace PsConsoleLauncher.ViewFunctions
 {
 	public static class ControllerHelper
 	{

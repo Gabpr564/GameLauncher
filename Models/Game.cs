@@ -16,4 +16,5 @@ namespace PsConsoleLauncher.Models
 		public string CoverPath { get; set; }
 		public DateTime? LastPlayed { get; set; }
 	}
+	// Make sure it wraps back to games.json
 }

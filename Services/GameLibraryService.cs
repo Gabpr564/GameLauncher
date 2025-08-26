@@ -69,8 +69,14 @@ namespace PsConsoleLauncher.Services
 					});
 				}
 
+				
+
 				return games;
 			}
+		}
+		public class GameMenuTie()
+		{
+			//Will make a list of the last played games to display in the main menu.
 		}
 
 	}

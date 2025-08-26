@@ -1,5 +1,6 @@
 using PsConsoleLauncher.Models;
 using PsConsoleLauncher.Services;
+using PsConsoleLauncher.ViewFunctions;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -236,4 +237,5 @@ namespace PsConsoleLauncher.Views
 		public GameViewModel(Game g) { Model = g; }
 		public Game ToModel() => Model;
 	}
+	// Add game icon selector as well as functionallity to the buttons. Also add top row buttons.
 }
