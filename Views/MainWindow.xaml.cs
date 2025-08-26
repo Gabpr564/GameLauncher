@@ -15,7 +15,7 @@ namespace PsConsoleLauncher.Views
 {
 	public partial class MainWindow : Window
 	{
-		public ObservableCollection<GameViewModel> Games { get; } = new ObservableCollection<GameViewModel>();
+		public ObservableCollection<GameViewModel> Games { get; } = new();
 		private int _selectedIndex = -1;
 
 		// Optional: Controller timer
@@ -23,7 +23,7 @@ namespace PsConsoleLauncher.Views
 
 		public MainWindow()
 		{
-			InitializeComponent();
+			// InitializeComponent();
 			DataContext = this;
 
 			// Load games from your library or seed sample
@@ -66,14 +66,16 @@ namespace PsConsoleLauncher.Views
 			Games[_selectedIndex].IsSelected = true;
 
 			// Scroll tile into view
-			var container = TileItemsControl.ItemContainerGenerator.ContainerFromIndex(_selectedIndex) as FrameworkElement;
+			var ic = FindName("TileItemsControl") as ItemsControl;
+			var container = ic?.ItemContainerGenerator.ContainerFromIndex(_selectedIndex) as FrameworkElement;
 			container?.BringIntoView();
+
 
 			// Update details
 			var gvm = Games[_selectedIndex];
-			DetailTitle.Text = gvm.Title;
-			DetailPlatform.Text = gvm.Platform;
-			DetailPath.Text = gvm.ExecutablePath;
+			if (FindName("DetailTitle") is TextBlock detailTitle) detailTitle.Text = gvm.Title;
+			if (FindName("DetailPlatform") is TextBlock detailPlatform) detailPlatform.Text = gvm.Platform;
+			if (FindName("DetailPath") is TextBlock detailPath) detailPath.Text = gvm.ExecutablePath;
 		}
 		#endregion
 
@@ -220,7 +222,7 @@ namespace PsConsoleLauncher.Views
 		#endregion
 	}
 
-	// lightweight ViewModel for selection flag without adding heavy MVVM dependencies
+	// lightweight ViewModel for a selection flag without adding heavy MVVM dependencies
 	public class GameViewModel
 	{
 		public Game Model { get; }
