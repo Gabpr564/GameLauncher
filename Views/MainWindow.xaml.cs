@@ -33,7 +33,7 @@ namespace PsConsoleLauncher.Views
 				// Seed demo if empty
 				loaded = new System.Collections.Generic.List<Game>
 				{
-					new Game { Title = "Notepad (Demo)", Platform = "PC", ExecutablePath = "notepad.exe", CoverImagePath = "Themes/Default/assets/sample_cover.png" }
+					new Game { Title = "Notepad (Demo)", Platform = "PC", ExecutablePath = "notepad.exe", CoverPath = "Themes/Default/assets/sample_cover.png" }
 				};
 			}
 
@@ -152,7 +152,7 @@ namespace PsConsoleLauncher.Views
 					Title = System.IO.Path.GetFileNameWithoutExtension(ofd.FileName),
 					Platform = "PC",
 					ExecutablePath = ofd.FileName,
-					CoverImagePath = "Themes/Default/assets/sample_cover.png"
+					CoverPath = "Themes/Default/assets/sample_cover.png"
 				};
 				Games.Add(new GameViewModel(g));
 				// Persist to disk

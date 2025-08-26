@@ -65,7 +65,7 @@ namespace PsConsoleLauncher.Services
 						Title = title,
 						Platform = "PC", // or detect later
 						ExecutablePath = exe,
-						CoverImagePath = cover ?? "Assets/placeholder.png"
+						CoverPath = cover ?? "Assets/placeholder.png"
 					});
 				}
 
