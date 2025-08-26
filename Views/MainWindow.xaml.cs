@@ -15,7 +15,7 @@ namespace PsConsoleLauncher.Views
 {
 	public partial class MainWindow : Window
 	{
-		public ObservableCollection<GameViewModel> Games { get; } = new ObservableCollection<GameViewModel>();
+		public ObservableCollection<GameViewModel> Games { get; } = new();
 		private int _selectedIndex = -1;
 
 		// Optional: Controller timer
@@ -23,7 +23,7 @@ namespace PsConsoleLauncher.Views
 
 		public MainWindow()
 		{
-			InitializeComponent();
+			// InitializeComponent();
 			DataContext = this;
 
 			// Load games from your library or seed sample
@@ -33,7 +33,7 @@ namespace PsConsoleLauncher.Views
 				// Seed demo if empty
 				loaded = new System.Collections.Generic.List<Game>
 				{
-					new Game { Title = "Notepad (Demo)", Platform = "PC", ExecutablePath = "notepad.exe", CoverImagePath = "Themes/Default/assets/sample_cover.png" }
+					new Game { Title = "Notepad (Demo)", Platform = "PC", ExecutablePath = "notepad.exe", CoverPath = "Themes/Default/assets/sample_cover.png" }
 				};
 			}
 
@@ -66,14 +66,16 @@ namespace PsConsoleLauncher.Views
 			Games[_selectedIndex].IsSelected = true;
 
 			// Scroll tile into view
-			var container = TileItemsControl.ItemContainerGenerator.ContainerFromIndex(_selectedIndex) as FrameworkElement;
+			var ic = FindName("TileItemsControl") as ItemsControl;
+			var container = ic?.ItemContainerGenerator.ContainerFromIndex(_selectedIndex) as FrameworkElement;
 			container?.BringIntoView();
+
 
 			// Update details
 			var gvm = Games[_selectedIndex];
-			DetailTitle.Text = gvm.Title;
-			DetailPlatform.Text = gvm.Platform;
-			DetailPath.Text = gvm.ExecutablePath;
+			if (FindName("DetailTitle") is TextBlock detailTitle) detailTitle.Text = gvm.Title;
+			if (FindName("DetailPlatform") is TextBlock detailPlatform) detailPlatform.Text = gvm.Platform;
+			if (FindName("DetailPath") is TextBlock detailPath) detailPath.Text = gvm.ExecutablePath;
 		}
 		#endregion
 
@@ -152,7 +154,7 @@ namespace PsConsoleLauncher.Views
 					Title = System.IO.Path.GetFileNameWithoutExtension(ofd.FileName),
 					Platform = "PC",
 					ExecutablePath = ofd.FileName,
-					CoverImagePath = "Themes/Default/assets/sample_cover.png"
+					CoverPath = "Themes/Default/assets/sample_cover.png"
 				};
 				Games.Add(new GameViewModel(g));
 				// Persist to disk
@@ -220,79 +222,18 @@ namespace PsConsoleLauncher.Views
 		#endregion
 	}
 
-	// lightweight ViewModel for selection flag without adding heavy MVVM dependencies
+	// lightweight ViewModel for a selection flag without adding heavy MVVM dependencies
 	public class GameViewModel
 	{
 		public Game Model { get; }
 		public string Title => Model.Title;
 		public string Platform => Model.Platform;
 		public string ExecutablePath => Model.ExecutablePath;
-		public string CoverImagePath => Model.CoverImagePath;
+		public string CoverPath => Model.CoverPath;
 
 		public bool IsSelected { get; set; } = false;
 
 		public GameViewModel(Game g) { Model = g; }
 		public Game ToModel() => Model;
-	}
-	public static class ControllerHelper
-	{
-		[StructLayout(LayoutKind.Sequential)]
-		public struct XINPUT_STATE
-		{
-			public uint dwPacketNumber;
-			public XINPUT_GAMEPAD Gamepad;
-		}
-
-		[StructLayout(LayoutKind.Sequential)]
-		public struct XINPUT_GAMEPAD
-		{
-			public ushort wButtons;
-			public byte bLeftTrigger;
-			public byte bRightTrigger;
-			public short sThumbLX;
-			public short sThumbLY;
-			public short sThumbRX;
-			public short sThumbRY;
-		}
-
-		private const int ERROR_SUCCESS = 0;
-		private const ushort XINPUT_GAMEPAD_DPAD_LEFT = 0x0001;
-		private const ushort XINPUT_GAMEPAD_DPAD_RIGHT = 0x0002;
-		private const ushort XINPUT_GAMEPAD_A = 0x1000;
-
-		[DllImport("xinput1_4.dll")]
-		private static extern int XInputGetState(int dwUserIndex, out XINPUT_STATE pState);
-
-		public struct ReadState
-		{
-			public bool Connected;
-			public bool DPadLeft;
-			public bool DPadRight;
-			public bool ButtonA;
-			public float LeftThumbX;
-		}
-
-		public static ReadState GetState(int index)
-		{
-			var outState = new ReadState();
-			try
-			{
-				if (XInputGetState(index, out XINPUT_STATE state) == ERROR_SUCCESS)
-				{
-					outState.Connected = true;
-					var buttons = state.Gamepad.wButtons;
-					outState.DPadLeft = (buttons & XINPUT_GAMEPAD_DPAD_LEFT) != 0;
-					outState.DPadRight = (buttons & XINPUT_GAMEPAD_DPAD_RIGHT) != 0;
-					outState.ButtonA = (buttons & XINPUT_GAMEPAD_A) != 0;
-					outState.LeftThumbX = state.Gamepad.sThumbLX / 32767f;
-				}
-			}
-			catch
-			{
-				// If xinput dll not present the call will throw; return disconnected
-				outState.Connected = false;
-			}
-			return outState;
-		}
 	}
 }

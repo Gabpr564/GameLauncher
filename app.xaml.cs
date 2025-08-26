@@ -1,12 +1,10 @@
 ﻿using System.Windows;
 
-namespace ConsoleMenu
+namespace PsConsoleLauncher
 {
 	public partial class MainWindow : Window
 	{
 		public MainWindow()
-		{
-			InitializeComponent();
-		}
+		{}
 	}
 }

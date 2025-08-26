@@ -11,7 +11,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 
-namespace PsConsoleLauncher
+namespace PsConsoleLauncher.ViewModels
 {
 	public class MainWindowViewModel : ObservableObject
 	{
