@@ -26,7 +26,7 @@ namespace PsConsoleLauncher.ViewModels
 		{
 			PlayCommand = new RelayCommand(Play, () => SelectedGame != null);
 			AddGameCommand = new RelayCommand(AddGame);
-			// Seed sample
+			// Remove and tie to game library.
 			Games.Add(new Game { Title = "Sample Game", Platform = "PC", ExecutablePath = "C:\\Windows\\notepad.exe", CoverPath = "assets/sample_cover.png" });
 			SelectedGame = Games[0];
 		}

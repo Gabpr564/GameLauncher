@@ -1,22 +1,27 @@
 using PsConsoleLauncher.Models;
 using PsConsoleLauncher.Services;
 using PsConsoleLauncher.ViewFunctions;
+using PsConsoleLauncher.ViewModels;
 using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Threading;
+
 
 namespace PsConsoleLauncher.Views
 {
 	public partial class MainWindow : Window
 	{
 		public ObservableCollection<GameViewModel> Games { get; } = new();
+		private ItemSelector _selector;
 		private int _selectedIndex = -1;
 
 		// Optional: Controller timer
@@ -24,6 +29,8 @@ namespace PsConsoleLauncher.Views
 
 		public MainWindow()
 		{
+			
+		    
 			// InitializeComponent();
 			DataContext = this;
 
@@ -31,7 +38,7 @@ namespace PsConsoleLauncher.Views
 			var loaded = GameLibraryService.LoadGames();
 			if (loaded == null || loaded.Count == 0)
 			{
-				// Seed demo if empty
+				// Remove and tie to game library service
 				loaded = new System.Collections.Generic.List<Game>
 				{
 					new Game { Title = "Notepad (Demo)", Platform = "PC", ExecutablePath = "notepad.exe", CoverPath = "Themes/Default/assets/sample_cover.png" }
@@ -220,8 +227,18 @@ namespace PsConsoleLauncher.Views
 				PlaySelected();
 			}
 		}
+		// Cursor
+		private void ItemSelector()
+		{
+
+			var libraryService = new GameLibraryService.GameMenuTie();
+			_selector = new ItemSelector();
+
+			DataContext = _selector;
+		}
 		#endregion
 	}
+
 
 	// lightweight ViewModel for a selection flag without adding heavy MVVM dependencies
 	public class GameViewModel
